@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valley Organics</title>
+    <link href="bomma/logo.png" rel="icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+     <link rel="stylesheet" href="style.css">
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9; /* Light gray background for the whole page */
+            color: #333;
+        }
+
+        /* Navigation Styles */
+        .nav {
+            background-color: #C2B280; /* Soft brown nav */
+            color: #fff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            height: 50px;
+            transition: transform 0.3s ease;
+        }
+
+        .logo.active {
+            transform: scale(1.1);
+        }
+
+        .search-bar {
+            height: 40px;
+            line-height: 28px;
+            padding: 0 1rem;
+            width: 100%;
+            padding-left: 2.5rem;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            outline: none;
+            background-color: #ffffff;
+            color: #0d0c22;
+            box-shadow: 0 0 5px #C1D9BF, 0 0 0 10px #f5f5f5eb;
+            transition: .3s ease;
+             
+        }
+
+        .search-bar::placeholder {
+            color: #777;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            fill: #777;
+            width: 1rem;
+            height: 1rem;
+        }
+
+        .city-selection {
+            padding: 8px;
+            border: none;
+            border-radius: 5px;
+            width: 150px;
+            background-color: #fff;
+             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+         .profile a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .profile a:hover {
+            background-color: #45a049;
+        }
+
+         .nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+        .nav li {
+            margin: 0 20px;
+        }
+        .nav a {
+            color: #fff;
+            text-decoration: none;
+        }
+        .nav a:hover {
+            color: #ccc;
+        }
+
+        /* Main Content Styles */
+        .main {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px; /* Add padding around the products container */
+        }
+
+        .product {
+            margin: 20px;
+            width: 250px;
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 15px; /* Increased padding for better spacing */
+             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
+        }
+
+        .product:hover {
+            transform: translateY(-5px); /* Slight lift effect on hover */
+             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Enhance hover shadow */
+        }
+        .product img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .product h2 {
+            font-size: 18px;
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+
+        .product p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .price {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px; /* Added bottom margin */
+        }
+
+        .add-to-cart {
+             background-color: #4CAF50; /* Consistent green for add to cart */
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 10px;
+            border-radius: 5px;
+             transition: background-color 0.3s ease;
+        }
+
+        .add-to-cart:hover {
+             background-color: #3e8e41; /* Slightly darker green on hover */
+        }
+
+
+        /* Cart Styles */
+        .cart {
+           position: fixed;
+            top: 60px; /* Adjust top position */
+            right: 10px;
+            background-color: #ffffff;
+            color: #2c3e50;
+            padding: 20px;
+            border-radius: 10px;
+            width: 280px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+             z-index: 1000; /* Ensure the cart is always on top */
+        }
+
+        .cart h2 {
+             margin-top: 0;
+            font-size: 20px;
+            margin-bottom: 15px; /* Add bottom margin */
+        }
+
+        .cart ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .cart li {
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+             padding: 5px; /* Add padding inside the list item */
+            background-color: #f0f0f0; /* Add a subtle background to list items */
+            border-radius: 5px;
+        }
+
+        .cart li span {
+            font-size: 14px;
+        }
+
+        .cart li button {
+             background-color: #f44336;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            font-size: 12px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+          .cart li button:hover {
+            background-color: #e53935;
+        }
+
+         .cart p {
+            font-size: 16px;
+            margin: 15px 0;
+        }
+
+         .checkout {
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+             transition: background-color 0.3s ease;
+            width: 100%; /* Occupy full width within the cart */
+        }
+
+        .checkout:hover {
+           background-color: #3e8e41;
+        }
+
+          /* Category Section Styles */
+        .categories {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        .categories-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .category {
+            margin: 5px; /* Reduce the margin */
+            text-align: center;
+            cursor: pointer;
+            width: 120px; /* Reduced width for categories */
+            /* border: 2px solid #ddd; */ /* Remove border to make it square */
+            border: none; /* Remove border to make it square */
+            transition: transform 0.3s ease; /* Add transition for category */
+            border-radius: 8px;
+             padding: 10px; /* Add some padding */
+             background-color: #f0f0f0; /* Light gray background */
+             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+             transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+        .category:hover {
+             transform: scale(1.05); /* Increase size on hover */
+            background-color: #ffffff;
+        }
+        .category.active {
+             transform: scale(1.05);
+             background-color: #ffffff;
+             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .category img {
+            width: 80px; /* Reduced image size */
+            height: 80px; /* Reduced image size */
+            border-radius: 0;
+             margin-bottom: 5px; /* Add spacing between image and text */
+        }
+         .category p {
+            margin: 0;
+            font-size: 14px; /* Adjust the font size as needed */
+        }
+
+
+        /* Slider Styles */
+        .slider {
+            margin-top: 20px;
+            width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+            overflow: hidden;
+        }
+        .slide {
+            display: flex;
+            width: 300%;
+            transition: transform 0.5s ease;
+        }
+        .slide img {
+            width: 33.33%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .prev, .next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+        }
+        .prev {
+            left: 10px;
+        }
+        .next {
+            right: 10px;
+        }
+        #customer-reviews {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8f8f8;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .reviews-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            overflow-x: auto;
+        }
+
+      .review {
+         border: 1px solid #ddd;
+        padding: 20px;
+        margin: 10px;
+        width: 300px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+        transition: transform 0.3s ease;
+    }
+
+    .review:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .review h3 {
+        margin-top: 0;
+        font-size: 18px;
+    }
+
+    .rating {
+        display: flex;
+        align-items: center;
+    }
+
+    .rating i {
+        font-size: 16px;
+        color: gold;
+        margin-right: 5px;
+    }
+    .most-orders-section {
+            background-image: url('bomma/sky.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            padding: 30px 0;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .most-orders-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.7);
+            z-index: 1;
+        }
+
+        .most-orders-section h1 {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: #333;
+        }
+
+    .main {
+        position: relative;
+        z-index: 2;
+    }
+
+/* Global Reset and Base Styles */
+.container-solution, .container-value {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Solution Header Styles */
+.solution_header h1 {
+    text-align: center;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 30px;
+}
+
+.solution_header .green {
+    color: #2ecc71;
+}
+
+/* Paragraph Styles */
+.solution_p1, .solution_p2, .solution_p3 {
+    text-align: left;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+/* Venn Diagram Image */
+.img_venn_diagram {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+/* Button Styles */
+.solution_button_row .btn {
+    display: inline-block;
+    width: 100%;
+    padding: 12px 20px;
+    background-color: #2ecc71;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.solution_button_row .btn:hover {
+    background-color: #27ae60;
+}
+
+/* List Styles */
+.container-solution ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.container-solution ul li {
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 15px;
+}
+
+.container-solution ul li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #2ecc71;
+    font-weight: bold;
+}
+
+/* Responsive Video Container */
+.resp-container {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    padding-top: 56.25%; /* 16:9 Aspect Ratio */
+}
+
+.resp-iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Value Proposition Section */
+.container-value {
+    background-color: #f9f9f9;
+    padding: 50px 0;
+    text-align: center;
+}
+
+.container-value h1 {
+    margin-bottom: 30px;
+}
+
+.container-value video {
+    max-width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .container-solution .row > div,
+    .container-value .row > div {
+        margin-bottom: 30px;
+    }
+
+    .solution_button_row .btn {
+        margin-bottom: 15px;
+    }
+}
+
+
+#customer-reviews {
+    background-color: #f9f9f9;
+    padding: 30px;
+    text-align: center;
+}
+
+.reviews-container {
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.reviews-scroll-container {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    gap: 20px;
+    padding: 20px 0;
+}
+
+.review {
+    flex: 0 0 300px;
+    scroll-snap-align: center;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    transition: transform 0.3s ease;
+}
+
+.review:hover {
+    transform: scale(1.05);
+}
+
+.review-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.review-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-right: 15px;
+    object-fit: cover;
+}
+
+.review h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.review p {
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.rating i {
+    color: #ffc107;
+    margin-right: 3px;
+}
+
+/* Custom scrollbar for reviews */
+.reviews-scroll-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.reviews-scroll-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.reviews-scroll-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.reviews-scroll-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+
+.profile a {
+    color: #fff;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    padding: 8px 15px;
+    background-color: #4CAF50;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    font-size: 14px;
+}
+
+.profile a img {
+    margin-right: 8px;
+    border-radius: 50%;
+}
+
+.profile a:hover {
+    background-color: #45a049;
+}
+
+
+      /* Contact Details Section */
+      #contact-details {
+        background-color: #f5f5f5; /* Light gray background */
+        padding: 20px;
+        margin-top: 20px;
+        border-radius: 8px;
+      }
+
+      #contact-details h2 {
+        margin-top: 0;
+      }
+
+      #contact-details p {
+        margin-bottom: 10px;
+      }
+
+      #contact-details a {
+        color: #007bff;
+        text-decoration: none;
+      }
+
+      #contact-details a:hover {
+        text-decoration: underline;
+      }
+    </style>
+</head>
+<marquee behavior="scroll" direction="left" style="color: white; background-color:RGB(53,31,25);">
+    Valley Organics | Pure as Mother's Love
+  </marquee>
+
+<body>
+    <nav class="nav">
+        <div class="nav-container">
+            <img src="bomma/Bhai Organics.png" alt="Valley Organics Logo" class="logo" id="logo">
+            <div class="group">
+                <input placeholder="Search" type="search" class="search-bar">
+            </div>
+            <div class="city-container">
+                <select class="city-selection" id="city-selection">
+                    <option value="">Select City</option>
+                    <option value="Hyderbad">Hyderbad</option>
+                    <option value="Guntur">Guntur</option>
+                    <option value="bangalore">Bangalore</option>
+                    <!-- Add more cities and pincodes as needed -->
+                </select>
+           <div class="profile">
+    <a href="farmer.html">
+        <img src="bomma/farmer.jpg" alt="Farmer Login" style="width: 30px; height: 30px; vertical-align: middle; margin-right: 10px;">
+        Farmer Login
+    </a>
+</div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="categories-container">
+        <div class="categories">
+            <div class="category" onclick="window.location.href = 'category-rice.html'; highlightLogo(this)" id="rice-category">
+                <img src="bomma/Rice.png" alt="Rice">
+                <p>Rice</p>
+            </div>
+            <div class="category" onclick="window.location.href = 'category-vegetables.html'; highlightLogo(this)" id="vegetable-category">
+                <img src="bomma/Veg.png" alt="Vegetables">
+                 <p>Vegetables</p>
+            </div>
+            <div class="category" onclick="window.location.href = 'category-grains.html'; highlightLogo(this)" id="grains-category">
+                <img src="bomma/Pulses.png" alt="Grains">
+                <p>Grains & Pulses</p>
+            </div>
+            <div class="category" onclick="window.location.href = 'category-oil.html'; highlightLogo(this)" id="oil-category">
+                <img src="bomma/Oil.png" alt="Oil&Ghee">
+               <p>Oil&Ghee</p>
+            </div>
+            <div class="category" onclick="window.location.href = 'category-millets.html'; highlightLogo(this)" id="millet-category">
+                <img src="bomma/Health.png" alt="Millets">
+                 <p>Millet&Health</p>
+            </div>
+            <div class="category" onclick="window.location.href = 'category-combos.html'; highlightLogo(this)" id="combo-category">
+                <img src="bomma/Combos.png" alt="Combos">
+                 <p>Combos & Discounts</p>
+            </div>
+        </div>
+    </section>
+
+
+<section class="most-orders-section">
+<h1> Most Orders </h1>
+    <main class="main">
+        <div class="product">
+            <img src="bomma/Mango.jpeg" alt="Mangoes">
+            <h2>Mangoes</h2>
+            <p>Ripe and creamy organic mangoes</p>
+            <p class="price">₹250.00/kg</p>
+            <button class="add-to-cart" data-product-name="Mangoes" data-product-price="250.00">Add to Cart</button>
+        </div>
+        <div class="product">
+            <img src="bomma/Millet.jpg" alt="Millet">
+            <h2>Millet</h2>
+            <p>Thick and soft powdered</p>
+            <p class="price">₹100.00/kg</p>
+            <button class="add-to-cart" data-product-name="Millet" data-product-price="100.00">Add to Cart</button>
+        </div>
+        <div class="product">
+            <img src="bomma/Brownrice.jpg" alt="Brown Rice">
+            <h2>Brown Rice</h2>
+            <p>Best and health prescribed</p>
+            <p class="price">₹80.00/kg</p>
+            <button class="add-to-cart" data-product-name="Brown Rice" data-product-price="80.00">Add to Cart</button>
+        </div>
+        <div class="product">
+            <img src="bomma/Masala.jpg" alt="Masala">
+            <h2>Masala</h2>
+            <p>Best and non presevative</p>
+            <p class="price">₹40.00/kg</p>
+            <button class="add-to-cart" data-product-name="Masala" data-product-price="40.00">Add to Cart</button>
+        </div>
+        <!-- Add more products here -->
+
+    </main>
+</section>
+    <aside class="cart">
+        <h2>Cart</h2>
+        <ul id="cart-items">
+            <!-- Cart items will be dynamically added here -->
+        </ul>
+        <p id="cart-total">Total: ₹0.00</p>
+        <button class="checkout">Checkout</button>
+    </aside>
+
+<div class="container-solution">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 solution_header">
+        <h1>Our <span class="green">solution</span></h1>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-md-12">
+        <p class="solution_p1">Valley Organics Marketplace is a digital B2B market solution that brings together Farmers and Buyers.</p>
+      </div>
+    </div>
+      <div class="col-md-12 col-lg-6 right">
+        <p class="solution_p2">We drive agricultural transactions through our digital platform in combination with our service partnership network. Valley Organics Marketplace accommodates online payments between buyer and seller, product quality check options, and end-to-end logistic services.</p>
+        <p class="solution_p3">Valley Organics does not buy or sell crops and is not a broker. Instead, we offer you the ability to effortlessly market your crop via our platform.</p>
+                         </div>
+      </div>
+    </div>
+    <div class="row mt-5">
+      <div class="col-md-12 col-lg-6 left">
+        <ul>
+            <li><span>A user-friendly platform that generates market opportunity for farmers and industry buyers.</span></li>
+            <li><span>Unlimited access to a global market from anywhere, at anytime.</span></li>
+            <li><span>Transparent and reliable market information, deal creation and negotiation.</span></li>
+            <li><span>Integrated and secure platform payment processes.</span></li>
+            <li><span>Tailored product quality verification and logistic services.</span></li>
+            <li><span>A market with only verified buyers and sellers.</span></li>
+            <li><span>Customer support & insight.</span></li>
+        </ul>
+      </div>
+      </div>
+  </div>
+</div>
+
+
+<div class="container-value">
+  <div class="container">
+      <h1>
+        Our <span class="green">value</span> proposition
+      </h1>
+      <p>Valley Organics Marketplace accommodates direct transactions between buyers and sellers. All intermediate supply chain stages are covered by Valley MP and our partnership network. See our premium partners for more information.</p>
+    <video width="80%" playsinline="true" autoplay="autoplay" muted="muted" loop="loop" type="video/mp4" src="https://agrimp-prod.s3.amazonaws.com/public/OVP_Video.mp4"></video>
+  </div>
+</div>
+
+    <section id="customer-reviews">
+        <h2>Customer Reviews</h2>
+        <div class="reviews-container">
+          <!-- Reviews will be added here -->
+        </div>
+      </section>
+
+      <section id="contact-details">
+        <h2>Contact Details</h2>
+        <p><strong>Address:</strong> In ur heart</p>
+        <p><strong>Phone no:</strong> Ur Age</p>
+        <p><strong>Email:</strong> <a href="mailto:[bhai@gmail.com]">[bhai@gmail.com]</a></p>
+      </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const cartItems = {};
+            const cartItemsContainer = document.getElementById('cart-items');
+            const cartTotalElement = document.getElementById('cart-total');
+            const addToCartButtons = document.querySelectorAll('.add-to-cart');
+             const checkoutButton = document.querySelector('.checkout');
+            const logo = document.getElementById('logo');
+            const categories = document.querySelectorAll('.category');
+            const citySelection = document.getElementById('city-selection');
+            const reviewsContainer = document.querySelector('.reviews-container');
+
+            addToCartButtons.forEach((button) => {
+                button.addEventListener('click', () => {
+                    const productName = button.dataset.productName;
+                    const productPrice = parseFloat(button.dataset.productPrice);
+
+                    if (cartItems[productName]) {
+                        cartItems[productName].quantity += 1;
+                    } else {
+                        cartItems[productName] = { price: productPrice, quantity: 1 };
+                    }
+
+                    updateCart();
+                });
+            });
+
+            function updateCart() {
+                cartItemsContainer.innerHTML = '';
+                let total = 0;
+
+                for (const itemName in cartItems) {
+                    if (cartItems.hasOwnProperty(itemName)) {
+                        const item = cartItems[itemName];
+                        total += item.price * item.quantity;
+
+                        const cartItem = document.createElement('li');
+                        cartItem.innerHTML = `
+                            <span>${itemName} x ${item.quantity}</span>
+                            <button onclick="removeItem('${itemName}')">Remove</button>
+                        `;
+                        cartItemsContainer.appendChild(cartItem);
+                    }
+                }
+
+                cartTotalElement.textContent = `Total: ₹${total.toFixed(2)}`;
+            }
+
+            window.removeItem = (itemName) => {
+                if (cartItems[itemName].quantity > 1) {
+                    cartItems[itemName].quantity -= 1;
+                } else {
+                    delete cartItems[itemName];
+                }
+                updateCart();
+            };
+
+            // Highlight Logo function
+            function highlightLogo(category) {
+                categories.forEach(cat => {
+                    cat.classList.remove('active');
+                });
+                category.classList.add('active');
+
+                logo.classList.add('active');
+                setTimeout(() => {
+                    logo.classList.remove('active');
+                }, 300);
+            }
+
+            // Customer Reviews Section
+            // Sample customer reviews (replace with your actual data)
+            const reviews = [
+                 {
+                    name: "Bala",
+                    review: "I love the quality of the products from Valley Organics. They are fresh and flavorful! Highly recommend them.",
+                    rating: 5,
+image: "bomma/bala.jpg"
+                },
+                {
+                    name: "Charan",
+                    review: "I've been a customer of Valley Organics for years, and I've never been disappointed. Their service is excellent, and the prices are reasonable.",
+                    rating: 4,
+image: "bomma/charan.jpg"
+                },
+                {
+                    name: "Teja",
+                    review: "I was hesitant to try organic products at first, but Valley Organics won me over. Their products are top-notch, and I feel good knowing I'm supporting a sustainable brand.",
+                    rating: 5,
+image: "bomma/teja.jpg"
+                },
+            ];
+
+            // Function to generate HTML for a single review
+            function createReviewElement(review) {
+                const reviewElement = document.createElement('div');
+                 reviewElement.classList.add('review');
+
+                reviewElement.innerHTML = `
+                    <div class="review-header">
+                        <img src="${review.image}" alt="${review.name}" class="review-image">
+                        <h3>${review.name}</h3>
+                    </div>
+                    <p>${review.review}</p>
+                    <div class="rating">
+                        ${generateRatingStars(review.rating)}
+                    </div>
+                `;
+
+                return reviewElement;
+            }
+
+             // Function to generate rating stars HTML
+           function generateRatingStars(rating) {
+             let stars = '';
+                for (let i = 0; i < rating; i++) {
+                    stars += '<i class="fas fa-star"></i>';
+                }
+                for (let i = rating; i < 5; i++) {
+                    stars += '<i class="far fa-star"></i>';
+                }
+                return stars;
+            }
+
+            // Display customer reviews
+            reviews.forEach(review => {
+                const reviewElement = createReviewElement(review);
+                reviewsContainer.appendChild(reviewElement);
+            });
+
+             // Event listener for checkout button
+                checkoutButton.addEventListener('click', () => {
+                const cartData = encodeURIComponent(JSON.stringify(cartItems));
+                 window.location.href = `payment.html?cart=${cartData}`;
+                });
+        });
+    </script>
+    <div id="root"></div>
+</body>
+</html>

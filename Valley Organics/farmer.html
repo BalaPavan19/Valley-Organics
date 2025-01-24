@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer Dashboard - Valley Organics</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Reset and Base Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        /* Navigation Styles */
+        .nav {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #C2B280;
+            padding: 10px 20px;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            height: 30px;
+            transition: transform 0.3s ease;
+        }
+
+        /* Farmer Profile Styles */
+        .farmer-profile {
+            background-color: #ffffff;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        /* Categories Container Styles */
+        .categories-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            padding: 0 20px;
+        }
+
+        .inventory-category {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 15px;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .category {
+            display: flex;
+            align-items: center;
+        }
+
+        .category img {
+            width: 50px;
+            height: 50px;
+            margin-right: 15px;
+        }
+
+        .inventory-input {
+            width: 100px;
+            padding: 5px;
+            margin: 0 10px;
+        }
+
+        .save-inventory {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .current-inventory {
+            font-weight: bold;
+            color: #007bff;
+            margin-left: 15px;
+        }
+
+        /* Cart Checkout Styles */
+        #cart-checkout {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 350px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 20px;
+            z-index: 1000;
+            display: none;
+        }
+
+        #cart-items-list {
+            max-height: 250px;
+            overflow-y: auto;
+        }
+
+        .cart-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        .cart-button i {
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-container">
+            <img src="bomma/Bhai Organics.png" alt="Valley Organics Logo" class="logo">
+        </div>
+    </nav>
+
+    <div class="farmer-profile">
+        <h2>Farmer Profile</h2>
+        <p><strong>Name:</strong> [Farmer Name]</p>
+        <p><strong>Location:</strong> [Village/District]</p>
+        <p><strong>Registered Crops:</strong> [List of Crops]</p>
+    </div>
+
+    <div class="categories-container">
+        <div class="inventory-category">
+            <div class="category">
+                <img src="bomma/Rice.png" alt="Rice">
+                <p>Rice</p>
+            </div>
+            <div>
+                <label>Current: <span id="rice-current" class="current-inventory">0 kg</span></label>
+                <input type="number" class="inventory-input" id="rice-quantity" placeholder="Add Qty">
+                <button class="save-inventory" onclick="updateInventory('rice')">Update</button>
+            </div>
+        </div>
+        <div class="inventory-category">
+            <div class="category">
+                <img src="bomma/Veg.png" alt="Vegetables">
+                <p>Vegetables</p>
+            </div>
+            <div>
+                <label>Current: <span id="veg-current" class="current-inventory">0 kg</span></label>
+                <input type="number" class="inventory-input" id="veg-quantity" placeholder="Add Qty">
+                <button class="save-inventory" onclick="updateInventory('veg')">Update</button>
+            </div>
+        </div>
+        <div class="inventory-category">
+            <div class="category">
+                <img src="bomma/Pulses.png" alt="Grains">
+                <p>Grains & Pulses</p>
+            </div>
+            <div>
+                <label>Current: <span id="grains-current" class="current-inventory">0 kg</span></label>
+                <input type="number" class="inventory-input" id="grains-quantity" placeholder="Add Qty">
+                <button class="save-inventory" onclick="updateInventory('grains')">Update</button>
+            </div>
+        </div>
+        <div class="inventory-category">
+            <div class="category">
+                <img src="bomma/Oil.png" alt="Oil&Ghee">
+                <p>Oil & Ghee</p>
+            </div>
+            <div>
+                <label>Current: <span id="oil-current" class="current-inventory">0 kg</span></label>
+                <input type="number" class="inventory-input" id="oil-quantity" placeholder="Add Qty">
+                <button class="save-inventory" onclick="updateInventory('oil')">Update</button>
+            </div>
+        </div>
+        <div class="inventory-category">
+            <div class="category">
+                <img src="bomma/Health.png" alt="Millets">
+                <p>Millet & Health</p>
+            </div>
+            <div>
+                <label>Current: <span id="millet-current" class="current-inventory">0 kg</span></label>
+                <input type="number" class="inventory-input" id="millet-quantity" placeholder="Add Qty">
+                <button class="save-inventory" onclick="updateInventory('millet')">Update</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="cart-checkout">
+        <h2 style="text-align: center; margin-bottom: 15px;">Cart Checkout</h2>
+        <div id="cart-items-list"></div>
+        <div style="display: flex; justify-content: space-between; margin-top: 15px;">
+            <strong>Total Items:</strong>
+            <span id="total-cart-items">0</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+            <strong>Total Quantity:</strong>
+            <span id="total-cart-quantity">0 kg</span>
+        </div>
+        <button onclick="proceedToCheckout()" style="
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin-top: 15px;
+        ">Proceed to Checkout</button>
+        <button onclick="closeCart()" style="
+            width: 100%;
+            padding: 10px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin-top: 10px;
+        ">Close</button>
+    </div>
+
+    <div class="cart-button" onclick="openCart()">
+        <i class="fas fa-shopping-cart"></i>
+    </div>
+
+    <script>
+        const inventoryData = {};
+        const cartCheckout = document.getElementById('cart-checkout');
+        const cartItemsList = document.getElementById('cart-items-list');
+        const totalCartItems = document.getElementById('total-cart-items');
+        const totalCartQuantity = document.getElementById('total-cart-quantity');
+
+        function updateInventory(category) {
+            const quantityInput = document.getElementById(`${category}-quantity`);
+            const currentDisplay = document.getElementById(`${category}-current`);
+            const addedQuantity = parseFloat(quantityInput.value) || 0;
+
+            if (!inventoryData[category]) {
+                inventoryData[category] = 0;
+            }
+
+            inventoryData[category] += addedQuantity;
+            currentDisplay.textContent = `${inventoryData[category]} kg`;
+            quantityInput.value = '';
+        }
+
+        function openCart() {
+            updateCartDetails();
+            cartCheckout.style.display = 'block';
+        }
+
+        function closeCart() {
+            cartCheckout.style.display = 'none';
+        }
+
+        function updateCartDetails() {
+            cartItemsList.innerHTML = '';
+            let itemCount = 0;
+            let totalQuantity = 0;
+
+            Object.keys(inventoryData).forEach(category => {
+                if (inventoryData[category] > 0) {
+                    const itemRow = document.createElement('div');
+                    itemRow.style.display = 'flex';
+                    itemRow.style.justifyContent = 'space-between';
+                    itemRow.style.marginBottom = '10px';
+                    itemRow.innerHTML = `
+                        <span>${category.charAt(0).toUpperCase() + category.slice(1)}</span>
+                        <span>${inventoryData[category]} kg</span>
+                    `;
+                    cartItemsList.appendChild(itemRow);
+                    
+                    itemCount++;
+                    totalQuantity += inventoryData[category];
+                }
+            });
+
+            totalCartItems.textContent = itemCount;
+            totalCartQuantity.textContent = `${totalQuantity} kg`;
+        }
+
+        function proceedToCheckout() {
+            alert('Proceeding to checkout. Total items: ' + totalCartItems.textContent);
+            closeCart();
+        }
+
+        // Load existing inventory on page load
+        window.onload = function() {
+            const categories = ['rice', 'veg', 'grains', 'oil', 'millet'];
+            categories.forEach(category => {
+                const savedQuantity = localStorage.getItem(`${category}-inventory`);
+                if (savedQuantity) {
+                    inventoryData[category] = parseFloat(savedQuantity);
+                    document.getElementById(`${category}-current`).textContent = `${savedQuantity} kg`;
+                }
+            });
+        }
+
+        // Save to local storage when leaving page
+        window.onbeforeunload = function() {
+            Object.keys(inventoryData).forEach(category => {
+                localStorage.setItem(`${category}-inventory`, inventoryData[category]);
+            });
+        }
+    </script>
+</body>
+</html>
